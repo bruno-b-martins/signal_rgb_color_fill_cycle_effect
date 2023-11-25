@@ -1,0 +1,47 @@
+<head>
+    <title>Color Fill Cycle</title>
+    <meta description="Color fill cycle."/>
+    <meta publisher="bruno-b-martins"/>
+    <meta property="speed" label="Cycle Speed" type="number" min="1" max="10" default="1">
+    <meta property="hue_step" label="Hue Step" type="number" min="1" max="720" default="64">
+</head>
+    
+<body style="margin: 0; padding: 0;">
+  	<canvas id="exCanvas" width="320" height="200"></canvas>
+</body>
+    
+<script>
+    // Get the canvas element from the DOM
+    var c = document.getElementById("exCanvas");
+    var ctx = c.getContext("2d");  
+    var middle_width = 0;
+    var max_width = 320;
+    var height = 200;
+    var previous_hue = null;
+    var next_hue = null;
+
+    function init() {
+        previous_hue = 0;
+        next_hue = hue_step;
+    }
+
+    function update() {
+        middle_width += speed
+        if (middle_width > max_width) {
+            middle_width = middle_width % max_width;
+            previous_hue = (previous_hue + hue_step) % 360;
+            next_hue = (next_hue + hue_step) % 360;
+        }
+
+        ctx.fillStyle = 'hsl('+ previous_hue + ', 100%, 50%)';
+        ctx.fillRect(middle_width, 0, max_width, height);
+
+        ctx.fillStyle = 'hsl('+ next_hue + ', 100%, 50%)';
+        ctx.fillRect(0, 0, middle_width, height);
+
+        window.requestAnimationFrame(update);
+    }
+
+    window.requestAnimationFrame(init);
+	window.requestAnimationFrame(update);
+</script>
